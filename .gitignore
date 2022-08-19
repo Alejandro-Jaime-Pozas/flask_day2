@@ -1,0 +1,4 @@
+__pycache__
+venv1 
+# inserting files and folders here will ignore them from git uploading...
+app.db

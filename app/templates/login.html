@@ -1,0 +1,26 @@
+<!-- this extends the base.html file to include addtl data -->
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+<h2 class="text-center">Login Here!</h2>
+
+<!-- this form below has no action='' bc instead of doing an action it posts a method using flask -->
+<form method="post">
+    <!-- YOU NEED THIS form.csrf_token IN ORDER TO GET THE DATA -->
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.username.label }}
+        {{ form.username(class='form-control', placeholder='Enter Username') }}
+        <br>
+        {{ form.password.label }}
+        {{ form.password(class='form-control', placeholder='Enter Password') }}
+        <br>
+        
+        {{ form.submit(class=' button btn-primary w-25 mt-3') }}
+    
+    </div>
+</form>
+
+{% endblock content %}

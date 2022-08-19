@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- NEED TO COMMENT out THIS REF TO CSS STYLE BELOW TO MAKE FLASK WEBSITE WORK..... -->
+<!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+<title>{% block title %} {% endblock title %} </title>
+</head>
+<body>
+<!-- USE BASE.HTML AS THE MAIN TEMPLATE WHERE YOU WANT EVERY PAGE TO LOOK LIKE THIS -->
+
+<!-- navbar goes here -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Flask101</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <!-- the href below references an endpoint, looking for a fn defined in routes.py -->
+            <a class="nav-link" href="{{ url_for('index') }}">Home</a> 
+            <!-- current_user is a global variable that is tracked througout user's journey (probably from User class). is_authenticated checks the UserMixin class from flask-login -->
+            {% if current_user.is_authenticated %}
+                <a class="nav-link" href="{{ url_for('create') }}">Create a Post</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+            {% else %}
+                <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+                <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+    </nav>
+
+<!-- start container -->
+<div class="container">
+    {% include 'alert.html' %}
+    
+    {% block content %} {% endblock content %}
+</div>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>

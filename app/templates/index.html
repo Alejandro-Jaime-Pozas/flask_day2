@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+
+<h2 class="text-center">Welcome to the Kekambas Blog</h2>
+{% if current_user.is_authenticated %}
+    <h6 class="text-center">Signed in as: {{ current_user.username }}</h6>
+
+        {% for post in posts %}
+            <div class="card">
+                <div class="card-body">
+                    <!-- url_for links to view_post fn and takes in a post_id key w post.id value for that post -->
+                <a href="{{ url_for('view_post', post_id=post.id) }}">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                </a>
+                <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+
+{% else %}
+    <h4 class="text-center">Please sign up or log in to view posts</h4>
+{% endif %}
+
+{% endblock content %}
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>
