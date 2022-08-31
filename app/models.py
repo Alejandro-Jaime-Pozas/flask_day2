@@ -62,4 +62,14 @@ class Post(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "body": self.body,
+            "date_created": self.date_created,
+            "user_id": self.user_id
+        }
+
 # to implement migrations folder, type cmd line >>> flask db init
