@@ -89,10 +89,7 @@ def view_post(post_id): # here the fn takes in a post_id NEEDS SAME NAME AS ABOV
     return render_template('post.html', post=post)
 
 
-# ESTO DE ABAJO LO VOY A HACER/DEJAR HASTA EL FINAL
-
-
-
+# POST MANIPULATION
 
 
 @app.route('/posts/<post_id>/edit', methods=['GET', 'POST'])

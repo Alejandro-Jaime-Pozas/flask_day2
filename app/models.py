@@ -29,6 +29,16 @@ class User(db.Model, UserMixin): # UserMixin allows the instance of User class t
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    # ADDDED FOR API FN
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'username': self.username,
+            'password': self.password,
+            'date_created': self.date_created,
+            # 'posts': self.posts ###THIS DOESNT WORK FOR API
+        }
 
 
 @login.user_loader
@@ -62,7 +72,7 @@ class Post(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-
+    ### ADDED FOR API FN
     def to_dict(self):
         return {
             "id": self.id,

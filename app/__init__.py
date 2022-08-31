@@ -21,9 +21,8 @@ login = LoginManager(app)
 login.login_view = 'login' # tells the login manager which endpoint to redirect if someone is not logged in
 login.login_message_category = 'danger'
 
-
+### ADDED FOR API FN
 from app.blueprints.api import api
 app.register_blueprint(api)
 
-from . import routes, models # you need to include this AFTER flask instance...the . refers to the current folder; 
-
+from . import routes, models # you need to include this AFTER flask instance to avoid infinite loop...the . refers to the current folder; 
