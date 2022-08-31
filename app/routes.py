@@ -42,7 +42,7 @@ def create():
         title = form.title.data
         body = form.body.data
         # create a new instance of Post w the form data
-        new_post = Post(title=title, body=body, user_id=current_user.id) ############ MISSING SOMETHING HERE FOR USER_ID to make this work
+        new_post = Post(title=title, body=body, user_id=current_user.id) # sets the Post instance's user_id to the current user...
         # flash a msg saying the post has been created
         flash(f'{new_post.title} has been created.', 'secondary')
         # return back to homepage
@@ -87,6 +87,12 @@ def logout():
 def view_post(post_id): # here the fn takes in a post_id NEEDS SAME NAME AS ABOVE IN APP.ROUTE()...
     post = Post.query.get_or_404(post_id) # this encounters error if you just put in the get()
     return render_template('post.html', post=post)
+
+
+# ESTO DE ABAJO LO VOY A HACER/DEJAR HASTA EL FINAL
+
+
+
 
 
 @app.route('/posts/<post_id>/edit', methods=['GET', 'POST'])

@@ -22,5 +22,8 @@ login.login_view = 'login' # tells the login manager which endpoint to redirect 
 login.login_message_category = 'danger'
 
 
+from app.blueprints.api import api
+app.register_blueprint(api)
+
 from . import routes, models # you need to include this AFTER flask instance...the . refers to the current folder; 
 

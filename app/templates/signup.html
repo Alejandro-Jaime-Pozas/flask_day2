@@ -6,7 +6,7 @@
 {% block content %}
 <h2 class="text-center">Sign Up Here!</h2>
 
-<!-- this form below has no action='' bc instead of doing an action it posts a method using flask -->
+<!-- NEED METHOD='POST' BELOW FOR IT TO WORK; this form below has no action='' bc instead of doing an action it posts a method using flask -->
 <form method="post">
     <!-- YOU NEED THIS form.csrf_token IN ORDER TO GET THE DATA -->
     {{ form.csrf_token }}

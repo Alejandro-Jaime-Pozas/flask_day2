@@ -15,19 +15,20 @@ class User(db.Model, UserMixin): # UserMixin allows the instance of User class t
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # save the pswd as hashed version of the pswd
-        self.set_password(kwargs['password'])
+        self.set_password(kwargs['password']) # why not just input password?
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
         return f"<User: {self.username} | {self.email}"
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
     def set_password(self, password):
         self.password = generate_password_hash(password)
         db.session.commit()
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
 
 
 @login.user_loader
