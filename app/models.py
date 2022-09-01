@@ -1,5 +1,7 @@
+import base64 
+import os
 from app import db, login
-from datetime import datetime
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -11,6 +13,8 @@ class User(db.Model, UserMixin): # UserMixin allows the instance of User class t
     password = db.Column(db.String(256), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) # ALWAYS store time to UTC time (universal central time) better to change on the frontend
     posts = db.relationship('Post', backref='author', lazy='dynamic') # creates a relationship bw post instance and its author; you can then access that author's username, email, etc
+    token = db.Column(db.String(32), index=True, unique=True)
+    token_expiration = db.Column(db.DateTime)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -40,6 +44,18 @@ class User(db.Model, UserMixin): # UserMixin allows the instance of User class t
             'posts': [p.to_dict() for p in self.posts.all()] ###THIS DOESNT WORK FOR API
         }
 
+    def get_token(self, expires_in=300):
+        now = datetime.utcnow()
+        if self.token and self.token_expiration > now + timedelta(seconds=60):
+            return self.token
+        self.token = base64.b64encode(os.urandom(24)).decode('utf-8')
+        self.token_expiration = now + timedelta(seconds=expires_in)
+        db.session.commit()
+        return self.token
+
+    def revoke_token(self):
+        self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
+        db.session.commit()
 
 @login.user_loader
 def load_user(user_id):
