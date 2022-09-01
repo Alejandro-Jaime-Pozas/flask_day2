@@ -62,9 +62,13 @@ def create_user():
     username = data.get('username')
     password = data.get('password')
     # date_created = data.get('date_created') ###this doesnt work
+    # before we add the user to the db, check to see if there is already a user w username or email
+    existing_user = User.query.filter((User.email == email) | (User.username == username)).first() # first() means the first instance of that..check this documentation db.Model 
+    if existing_user:
+        return jsonify({'error': 'User with username/email already exists'}), 400 # returning tuple here (jsonify(), 400)
     # now create a new user with the data
     new_user = User(email=email, username=username, password=password, )
-    return jsonify(new_user.to_dict()), 201 # 201 is created successfullyid
+    return jsonify(new_user.to_dict()), 201 # 201 is created successfully
 
 
 # get existing user from database of users, similar to get post (get method)

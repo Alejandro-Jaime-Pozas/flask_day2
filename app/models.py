@@ -37,7 +37,7 @@ class User(db.Model, UserMixin): # UserMixin allows the instance of User class t
             'username': self.username,
             'password': self.password,
             'date_created': self.date_created,
-            # 'posts': self.posts ###THIS DOESNT WORK FOR API
+            'posts': [p.to_dict() for p in self.posts.all()] ###THIS DOESNT WORK FOR API
         }
 
 
