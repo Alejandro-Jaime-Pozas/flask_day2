@@ -1,12 +1,23 @@
 from . import api
+from .auth import basic_auth, token_auth
 from flask import jsonify, request
 from app.models import Post, User
 
-# here we are linking the __init__.py to this file, returning a json api object
-@api.route('/')
-def index():
-    names = ['Al', 'By', 'Tay']
-    return jsonify(names)
+
+
+# TEST here we are linking the __init__.py to this file, returning a json api object
+# @api.route('/')
+# def index():
+#     names = ['Al', 'By', 'Tay']
+#     return jsonify(names)
+
+# this validates the user data, and returns token
+@api.route('/token')
+@basic_auth.login_required
+def get_token():
+    user = basic_auth.current_user()
+    token = user.get_token()
+    return jsonify({'token': token, 'token_expiration': user.token_expiration})
 
 # this /api/posts route/fn takes all the posts existingin db, and returns a json type object with each of the posts as a dict...this is done by a method within the Post class 
 @api.route('/posts', methods=["GET"])
@@ -22,6 +33,7 @@ def get_post(post_id):
 
 # api route to create a post
 @api.route('/posts', methods=["POST"])
+@token_auth.login_required
 def create_post():
     if not request.is_json:
         return jsonify({'error': 'Your request content type must be application/json'}), 400
@@ -29,7 +41,7 @@ def create_post():
     data = request.json
     print(data)
     # validate the data
-    for field in ['title', 'body', 'user_id']:
+    for field in ['title', 'body']:
         if field not in data:
             # if field not in request body, respond w a 400 error
             return jsonify({'error': f"{field} must be in request body"}), 400 # returning a tuple w jsonfy stmt and 400, which throws an error to indicate request not found
@@ -37,7 +49,7 @@ def create_post():
     # get fields from data dict
     title = data.get('title')
     body = data.get('body')
-    user_id = data.get('user_id')
+    user_id = token_auth.current_user().id
     # create a new instance of post w data
     new_post = Post(title=title, body=body, user_id=user_id)
     return jsonify(new_post.to_dict()), 201 # 201 status returns 'created'

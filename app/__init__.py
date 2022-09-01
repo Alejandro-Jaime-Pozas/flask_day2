@@ -3,6 +3,7 @@ from config import Config # this config refers to class in file config.py, refer
 from flask_sqlalchemy import SQLAlchemy # SQLAlchemy package allows python > sql tables/translation/communication?
 from flask_migrate import Migrate # migrate allows for new data to populate in database?
 from flask_login import LoginManager
+from flask_cors import CORS
 
 
 app = Flask(__name__) # calls Flask class in flask package with input __name__
@@ -20,6 +21,9 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login' # tells the login manager which endpoint to redirect if someone is not logged in
 login.login_message_category = 'danger'
+
+# add flask-cors cross-origin resource sharing
+CORS(app)
 
 ### ADDED FOR API FN
 from app.blueprints.api import api
