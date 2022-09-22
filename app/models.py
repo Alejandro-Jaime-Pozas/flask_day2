@@ -46,10 +46,10 @@ class User(db.Model, UserMixin): # UserMixin allows the instance of User class t
 
     def get_token(self, expires_in=300):
         now = datetime.utcnow()
-        if self.token and self.token_expiration > now + timedelta(seconds=60):
+        if self.token and self.token_expiration > now + timedelta(seconds=60): # COME BACK TO UNDERSTAND TIMEDELTA
             return self.token
-        self.token = base64.b64encode(os.urandom(24)).decode('utf-8')
-        self.token_expiration = now + timedelta(seconds=expires_in)
+        self.token = base64.b64encode(os.urandom(24)).decode('utf-8') # COME BACK TO UNDERSTAND THIS
+        self.token_expiration = now + timedelta(seconds=expires_in) # COME BACK TO UNDERSTAND THIS
         db.session.commit()
         return self.token
 

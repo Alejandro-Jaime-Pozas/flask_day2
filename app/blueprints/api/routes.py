@@ -3,8 +3,6 @@ from .auth import basic_auth, token_auth
 from flask import jsonify, request
 from app.models import Post, User
 
-
-
 # TEST here we are linking the __init__.py to this file, returning a json api object
 # @api.route('/')
 # def index():
